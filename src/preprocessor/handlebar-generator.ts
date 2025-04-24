@@ -39,6 +39,8 @@ export default class HandlebarsReportGenerator
    */
   async generateReport(artifacts: readonly Artifact[]): Promise<string> {
     const loadedTemplate = await getContent(this.template)
+    // print all the hanndlebars helpers
+    console.log(this.handlebars.helpers)
     const template = this.handlebars.compile(loadedTemplate)
 
     const workflowRunUrl: URL = new URL(
