@@ -12,7 +12,6 @@ import {
 } from './utils/format-helpers'
 import HandlebarsReportGenerator from './preprocessor/handlebar-generator'
 import handlebars from 'handlebars'
-import hbsHelpers from 'handlebars-helpers'
 import { createGitHubWebStrategy } from './destinations/web-comment'
 import { GitHubConsoleDestination } from './destinations/console'
 import path from 'path'
@@ -43,9 +42,10 @@ const run = async (): Promise<void> => {
     handlebarsInstance.registerHelper('pretty-size', humanReadableSize)
     handlebarsInstance.registerHelper('badge', shieldsIoBadge)
 
-    // Register the handlebars helpers
-    hbsHelpers({
-      handlebars: handlebarsInstance
+    // Register handlebars-helpers
+    var helpers = require('handlebars-helpers')()
+    Object.keys(helpers).forEach(helper => {
+      handlebarsInstance.registerHelper(helper, helpers[helper])
     })
 
     const handlebarProcessor = new HandlebarsReportGenerator(
