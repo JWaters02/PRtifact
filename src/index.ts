@@ -48,6 +48,12 @@ const run = async (): Promise<void> => {
       handlebarsInstance.registerHelper(helper, helpers[helper])
     })
 
+    core.debug('aaaaaa')
+    core.debug(actionInputs.handlebarsTemplate)
+    core.debug(JSON.stringify(handlebarsInstance, null, 2))
+    core.debug(JSON.stringify(github.context, null, 2))
+    core.debug(JSON.stringify(handlebarsInstance.helpers, null, 2))
+
     const handlebarProcessor = new HandlebarsReportGenerator(
       actionInputs.handlebarsTemplate,
       handlebarsInstance,

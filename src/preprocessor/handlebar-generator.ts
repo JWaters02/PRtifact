@@ -1,3 +1,4 @@
+import * as core from '@actions/core'
 import { getContent } from '../utils/input-helper'
 import handlebars from 'handlebars'
 import { Context } from '@actions/github/lib/context'
@@ -30,17 +31,6 @@ export default class HandlebarsReportGenerator
     this.template = template
     this.handlebars = handlebarsInstance
     this.context = context
-
-    console.log("Handlebars template: ", this.template)
-    console.log("Handlebars instance: ", this.handlebars)
-    console.log("GitHub context: ", this.context)
-    // Register handlebars-helpers
-    var helpers = require('handlebars-helpers')()
-    Object.keys(helpers).forEach(helper => {
-      this.handlebars.registerHelper(helper, helpers[helper])
-    })
-
-    console.log("Handlebars helpers: ", this.handlebars.helpers)
   }
 
   /**
