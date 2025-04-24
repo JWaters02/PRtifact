@@ -17,7 +17,7 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
-        
+
       - name: Generate random file
         run: |
           dd bs=1024 count=1024 </dev/urandom > fake-artifact-1.txt
