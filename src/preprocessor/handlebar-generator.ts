@@ -1,3 +1,4 @@
+import * as core from '@actions/core'
 import { getContent } from '../utils/input-helper'
 import handlebars from 'handlebars'
 import { Context } from '@actions/github/lib/context'

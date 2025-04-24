@@ -1,10 +1,7 @@
-name: Continuous Integration
+name: Github Action Tests
 
 on:
   pull_request:
-    branches:
-      - main
-  push:
     branches:
       - main
 
@@ -13,38 +10,6 @@ permissions:
   pull-requests: write
 
 jobs:
-  test-typescript:
-    name: TypeScript Tests
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        id: setup-node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-          cache: npm
-
-      - name: Install Dependencies
-        id: npm-ci
-        run: npm ci
-
-      - name: Check Format
-        id: npm-format-check
-        run: npm run format:check
-
-      - name: Lint
-        id: npm-lint
-        run: npm run lint
-
-      - name: Test
-        id: npm-ci-test
-        run: npm run ci-test
-
   test-action:
     name: GitHub Actions Test
     runs-on: ubuntu-latest
@@ -52,28 +17,33 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
+
       - name: Generate random file
         run: |
           dd bs=1024 count=1024 </dev/urandom > fake-artifact-1.txt
           dd bs=512 count=512 </dev/urandom > fake-artifact-2.txt
+
       - name: Upload test artifact 1
         uses: actions/upload-artifact@v4
         with:
           name: test-artifact_name-1
           path: fake-artifact-1.txt
           retention-days: 1
+
       - name: Upload test artifact 2
         uses: actions/upload-artifact@v4
         with:
           name: test-artifact_name-2
           path: fake-artifact-2.txt
           retention-days: 1
+
       - name: Test Local Action Create Mode
         id: test-action-create
         uses: ./
         with:
           comment-mode: CreateOrUpdate
           hidden-key: '# PRtifact E2E CreateOrUpdate'
+
       - name: Test Local Action Custom Template
         id: test-action-custom-template
         uses: ./
@@ -81,6 +51,7 @@ jobs:
           handlebars-template: './.github/test-assets/test-template.hbs'
           hidden-key: '# PRtifact E2E Custom File Test'
           comment-mode: CreateOrUpdate
+
       - name: Test Local Action Literal Template
         id: test-action-literal-template
         uses: ./
@@ -89,6 +60,7 @@ jobs:
           handlebars-template: '{{#each artifacts}}{{../context.payload.pull_request.head.sha}} {{/each}}'
           hidden-key: '# PRtifact E2E Literal Template Test'
           comment-mode: CreateOrUpdate
+
       - name: Test Local Action Literal Multiline Template
         id: test-action-literal-multiline-template
         uses: ./
@@ -98,4 +70,12 @@ jobs:
               {{../context.payload.pull_request.head.sha}}
             {{/each}}
           hidden-key: '# PRtifact E2E Multiline Template Test'
+          comment-mode: CreateOrUpdate
+
+      - name: Test Local Action Custom Template With Helpers
+        id: test-action-custom-template-with-helpers
+        uses: ./
+        with:
+          handlebars-template: './.github/test-assets/test-template-helpers.hbs'
+          hidden-key: '# PRtifact E2E Custom File With Helpers Test'
           comment-mode: CreateOrUpdate

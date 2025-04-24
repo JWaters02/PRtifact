@@ -1,0 +1,13 @@
+{{#each artifacts}}
+{{#eq name "test-artifact_name-2"}}
+
+|Name|Information|
+|---|---|
+|PR Commit|{{../context.payload.pull_request.head.sha}}|
+|Merge Commit|{{../context.sha}}|
+|Size|{{pretty-size size_in_bytes}}|
+|Last Updated|{{pretty-date updated_at}}|
+|Expires At|{{pretty-date expires_at}}|
+
+{{/eq}}
+{{/each}}
