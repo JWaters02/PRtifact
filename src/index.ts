@@ -12,12 +12,11 @@ import {
 } from './utils/format-helpers'
 import HandlebarsReportGenerator from './preprocessor/handlebar-generator'
 import handlebars from 'handlebars'
+import hbsHelpers from 'handlebars-helpers'
 import { createGitHubWebStrategy } from './destinations/web-comment'
 import { GitHubConsoleDestination } from './destinations/console'
 import path from 'path'
 import { TablePrinterProcessor } from './preprocessor/table-printer'
-
-const hbsHelpers = require('handlebars-helpers')
 
 export type Comment = components['schemas']['issue-comment']
 export type Artifact = components['schemas']['artifact']
