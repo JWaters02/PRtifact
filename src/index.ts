@@ -17,6 +17,8 @@ import { GitHubConsoleDestination } from './destinations/console'
 import path from 'path'
 import { TablePrinterProcessor } from './preprocessor/table-printer'
 
+const hbsHelpers = require('handlebars-helpers');
+
 export type Comment = components['schemas']['issue-comment']
 export type Artifact = components['schemas']['artifact']
 
@@ -41,6 +43,12 @@ const run = async (): Promise<void> => {
     handlebarsInstance.registerHelper('pretty-date', humanReadableDate)
     handlebarsInstance.registerHelper('pretty-size', humanReadableSize)
     handlebarsInstance.registerHelper('badge', shieldsIoBadge)
+    
+    // Register the handlebars helpers
+    hbsHelpers({
+      handlebars: handlebarsInstance
+    });
+
     const handlebarProcessor = new HandlebarsReportGenerator(
       actionInputs.handlebarsTemplate,
       handlebarsInstance,
