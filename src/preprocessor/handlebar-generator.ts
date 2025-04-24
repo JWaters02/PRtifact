@@ -30,6 +30,17 @@ export default class HandlebarsReportGenerator
     this.template = template
     this.handlebars = handlebarsInstance
     this.context = context
+
+    console.log("Handlebars template: ", this.template)
+    console.log("Handlebars instance: ", this.handlebars)
+    console.log("GitHub context: ", this.context)
+    // Register handlebars-helpers
+    var helpers = require('handlebars-helpers')()
+    Object.keys(helpers).forEach(helper => {
+      this.handlebars.registerHelper(helper, helpers[helper])
+    })
+
+    console.log("Handlebars helpers: ", this.handlebars.helpers)
   }
 
   /**
@@ -39,8 +50,6 @@ export default class HandlebarsReportGenerator
    */
   async generateReport(artifacts: readonly Artifact[]): Promise<string> {
     const loadedTemplate = await getContent(this.template)
-    // print all the hanndlebars helpers
-    console.log(this.handlebars.helpers)
     const template = this.handlebars.compile(loadedTemplate)
 
     const workflowRunUrl: URL = new URL(
